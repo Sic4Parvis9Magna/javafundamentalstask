@@ -1,0 +1,6 @@
+for compiling:
+javac -d %MYPATH%\bin -cp %MYPATH%\src %MYPATH%\src\javase01\t01\main\Main.java
+
+for running:
+
+java -cp  %MYPATH%\bin javase01\t01\Main

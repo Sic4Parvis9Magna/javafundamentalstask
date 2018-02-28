@@ -1,13 +1,7 @@
-package epamTasks.one;
+package epamtasks.one;
 
 public class TaskOneExerciseFour {
 
-	public static void main(String[] args) {
-		double arr[] = {1,2,3,100,3,2,1}; 
-		System.out.println("my ans = " + maxPair(arr));
-	}
-
-	
 	public static double maxPair(double[] array) {
 		double ans=0;
 		ans  =array[0] + array[array.length-1];
@@ -23,6 +17,4 @@ public class TaskOneExerciseFour {
 		}
 		return ans;
 	}
-	
-	//check then 0 is max. no one is max ???
 }
