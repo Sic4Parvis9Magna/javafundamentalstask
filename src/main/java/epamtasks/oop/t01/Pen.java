@@ -2,27 +2,38 @@ package epamtasks.oop.t01;
 
 import java.util.Objects;
 
-public class Pen implements Stationery {
-    private double price;
+public class Pen extends Stationery {
+
     private Color color;
-    private int thickness;
+    private double thickness;
 
-    public Pen(){}
-
-    public double getPrice() {
-        return price;
+    public Pen(){
+        name = "PEN";
+        color = Color.BLACK;
+        thickness = 0.7;
     }
+
+
+    public Pen setColor(Color color) {
+        this.color = color;
+        return  this;
+    }
+    public Pen setThickness(double thickness) {
+        this.thickness = thickness;
+        return  this;
+    }
+    public Pen setPrice(double price) {
+        this.price = price;
+        return this;
+    }
+
+
 
     public Color getColor() {
         return color;
     }
-
-    public int getThickness() {
+    public double getThickness() {
         return thickness;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     @Override

@@ -1,5 +1,14 @@
 package epamtasks.oop.t01;
 
-public interface Stationery {
-    double getPrice();
-}
+public  class Stationery {
+    protected   String name;
+    protected double price;
+
+
+    public String getName(){
+        return name;
+    };
+    public double getPrice() {
+        return price;
+    }
+   }
