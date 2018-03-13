@@ -32,46 +32,37 @@ public class Student {
         this.groupsNumbers.add(groupNumber);
         return this;
     }
-
     public Student setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
-
     public Student setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
-
     public Student setStudyMode(StudyMode studyMode) {
         this.studyMode = studyMode;
         return this;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
     public Set<Integer> getGroupNumber() {
         return groupsNumbers;
     }
-
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public int getId() {
+        return id;
+    }
     public StudyMode getStudyMode() {
         return studyMode;
     }
-
     public Grades getGrades() {
         return grades;
     }
-
     public static int getStudentCounter() {
         return studentCounter;
     }

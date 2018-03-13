@@ -8,22 +8,6 @@ public class Grades {
 
     Grades(){
         gradeMap = new HashMap<>();
-       /* for (Discipline dis:Discipline.values() ) {
-            this.addDiscipline(dis);
-        }
-        */
-    }
-
-    public Map<Discipline, List<Double>> getGradeMap() {
-        return gradeMap;
-    }
-
-    private boolean addDiscipline(Discipline discipline){
-        if(gradeMap.containsKey(discipline)){return false;
-        }else{
-            gradeMap.put(discipline,new ArrayList<Double>());
-            return true;
-        }
 
     }
 
@@ -34,11 +18,18 @@ public class Grades {
         gradeMap.get(discipline).add(grade);
         return this;
     }
-
     public Grades addGrade(Discipline discipline,Integer grade){
 
         this.addGrade(discipline,grade.doubleValue());
         return this;
+    }
+    private boolean addDiscipline(Discipline discipline){
+        if(gradeMap.containsKey(discipline)){return false;
+        }else{
+            gradeMap.put(discipline,new ArrayList<Double>());
+            return true;
+        }
+
     }
 
     public double getMeanGrade(Discipline discipline){
@@ -48,6 +39,9 @@ public class Grades {
              meanGrade += gradeVal.doubleValue();
         }
         return meanGrade/grades.size();
+    }
+    public Map<Discipline, List<Double>> getGradeMap() {
+        return gradeMap;
     }
 
 }

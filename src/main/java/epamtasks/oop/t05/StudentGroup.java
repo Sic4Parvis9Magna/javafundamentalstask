@@ -29,29 +29,11 @@ public class StudentGroup {
     public void setDiscipline(Discipline discipline) {
         this.discipline = discipline;
     }
-
-    public int getGroupNumber() {
-        return groupNumber;
-    }
-
-    public Discipline getDiscipline() {
-        return discipline;
-    }
-
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public static int getGroupCounter() {
-        return groupCounter;
-    }
-
     public StudentGroup addStudent(Student student){
         student.addGroupNumber(groupNumber);
         students.add(student);
         return this;
     }
-
     public boolean putAnEstimate(Student student,double estimate){
         if(!students.contains(student)){ return false;
         }else{
@@ -59,6 +41,19 @@ public class StudentGroup {
             return true;
         }
 
+    }
+
+    public int getGroupNumber() {
+        return groupNumber;
+    }
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+    public Set<Student> getStudents() {
+        return students;
+    }
+    public static int getGroupCounter() {
+        return groupCounter;
     }
 
     @Override
