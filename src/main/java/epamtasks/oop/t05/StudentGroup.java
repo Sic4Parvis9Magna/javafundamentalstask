@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class StudentGroup {
     private static final Logger log = LogManager.getLogger(StudentGroup.class);
-    private int groupNumber;
+    private final int groupNumber;
     private Discipline discipline;
     private Set<Student> students;
 

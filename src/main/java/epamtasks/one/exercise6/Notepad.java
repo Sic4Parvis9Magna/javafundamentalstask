@@ -1,10 +1,13 @@
 package epamtasks.one.exercise6;
 
+import lombok.extern.log4j.Log4j2;
+
 /**
  * Notepad - class contains an array of NotepadRecords (@see  epamtasks.one.exercise6.NotepadRecord)
  * and a quick information about array like as size and last added element("lastRecord").
  *
  */
+@Log4j2
 public class Notepad {
 
 
@@ -116,11 +119,11 @@ public class Notepad {
 	 * (@see  epamtasks.one.exercise6.Notepad)
 	 */
 	int findRecordWithId(int id) {
-		int position = -1;
+		//int position = -1;
 		
-		for(NotepadRecord record:this.records) {
-			position++;
-			if(record.getId() == id ) return position;
+		for(int i=0; i<=lastRecord; i++) {
+			//position++;
+			if(records[i].getId() == id ) return i;
 		}
 		return -1;
 	}
@@ -189,5 +192,35 @@ public class Notepad {
 	}
 
 
-	
+	public int getRecordId(String s) {
+
+		for (int i=0; i <= lastRecord; i++){
+
+			 if(records[i].getRecord().compareTo(s) == 0){
+			 	return  records[i].getId();
+			 }
+		}
+		return -1;
+	}
+
+	public String getRecordWithId(int id) {
+		int position = findRecordWithId(id);
+		if(position != -1) return records[position].getRecord();
+		return "NOT_FOUND";
+	}
+
+	public String getRecordOnPosition(int position){
+		if(position < 0 || position > lastRecord) {
+			return "EMPTY";
+		}else {
+			return records[position].getRecord();
+		}
+	}
+
+	public int getRecordPosition(String s) {
+		for (int i=0; i <= lastRecord;i++){
+			if(records[i].getRecord().equalsIgnoreCase(s)) return i;
+		}
+		return -1;
+	}
 }

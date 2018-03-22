@@ -2,34 +2,39 @@ package epamtasks.oop.t05;
 
 import java.util.*;
 
-public class Grades {
+public class Grades{
 
-   private Map<Discipline,List<Double>> gradeMap;
+     private Map<Discipline,List<Double>>  gradeMap;
 
     Grades(){
         gradeMap = new HashMap<>();
 
     }
 
-    public Grades addGrade(Discipline discipline,Double grade){
+    public Grades addGrade(Discipline discipline,double grade){
         if(!gradeMap.containsKey(discipline)){
            this.addDiscipline(discipline);
         }
-        gradeMap.get(discipline).add(grade);
-        return this;
-    }
-    public Grades addGrade(Discipline discipline,Integer grade){
 
-        this.addGrade(discipline,grade.doubleValue());
+        gradeMap.get(discipline).add(convertGrade(discipline,grade));
         return this;
     }
+
+    public static double convertGrade(Discipline discipline, double grade) {
+        if(discipline.isIntegerGrade()){
+            Integer newGrade = Integer.valueOf((int)grade);
+            return Double.valueOf(newGrade.doubleValue());
+        }else
+            return grade;
+
+    }
+
     private boolean addDiscipline(Discipline discipline){
         if(gradeMap.containsKey(discipline)){return false;
         }else{
-            gradeMap.put(discipline,new ArrayList<Double>());
+            gradeMap.put(discipline, new ArrayList<Double>());
+            }
             return true;
-        }
-
     }
 
     public double getMeanGrade(Discipline discipline){

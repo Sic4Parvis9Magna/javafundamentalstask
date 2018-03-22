@@ -6,7 +6,7 @@ public class TaskOneExerciseTwo {
 
 	private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(TaskOneExerciseTwo.class);
 
-	public static void nearestIndexOfArray(int size,double epsilon) {
+	public static int nearestIndexOfArray(int size,double epsilon) {
 		int nearestIndex = -1;
 		boolean found = false;
 		double currentElement;
@@ -23,6 +23,11 @@ public class TaskOneExerciseTwo {
 		}else{
 			log.info("Epsilon = {}, nearestIndex  what satisfies by condition isn't present in this array.\n",epsilon);
 		}
+		return nearestIndex;
+	}
+
+	public static void main(String[] args) {
+
 	}
 
 }

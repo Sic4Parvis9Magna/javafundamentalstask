@@ -1,5 +1,6 @@
 package epamtasks.one.exercise6;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Logger;
 
 import static org.apache.logging.log4j.LogManager.*;
@@ -7,29 +8,33 @@ import static org.apache.logging.log4j.LogManager.*;
 /**
  * NotepadRecord - class contains text strings named "record",
  * all records have own unique identifying number("Id").
+ * Record's id starts with 1, because 0 is reserved for EMPTY .
  *
  */
+
 public class NotepadRecord {
 	private static final Logger log = getLogger(NotepadRecord.class);
 	private String record;
-	private int id;
+	private final int id;
 	private final static  NotepadRecord EMPTY;
 	private static int lastId;
 	
 	 NotepadRecord() {
 		record = "";
-		id = lastId++;
+		id = lastId;
+		 lastId++;
+
 	}
 	 NotepadRecord(String record) {
-		this.record = record;
-		id =lastId++;
+		this();
+	 	this.record = record;
+
 	}
 
 
 	 String getRecord() {
 		return record;
 	}
-
 	 int getId() {
 		return id;
 	}
@@ -59,5 +64,7 @@ public class NotepadRecord {
 	 static NotepadRecord getEmptyRecord(){
 	 	return EMPTY;
 	}
+
+
 
 }

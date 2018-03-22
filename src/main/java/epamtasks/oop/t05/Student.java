@@ -11,7 +11,7 @@ public class Student {
     private static final Logger log = LogManager.getLogger(Student.class);
     private String firstName;
     private String lastName;
-    private int id;
+    private final int id;
     private Set<Integer> groupsNumbers;
     private Grades grades;
     private StudyMode studyMode;
@@ -20,8 +20,8 @@ public class Student {
 
 
     public Student(){
-        firstName = "unknown";
-        lastName = "unknown";
+        firstName = "UNKNOWN";
+        lastName = "UNKNOWN";
         id = studentCounter++;
         groupsNumbers = new HashSet<>();
         grades = new Grades();
@@ -74,16 +74,13 @@ public class Student {
         Student student = (Student) o;
         return id == student.id &&
                 Objects.equals(firstName, student.firstName) &&
-                Objects.equals(lastName, student.lastName) &&
-                Objects.equals(groupsNumbers, student.groupsNumbers) &&
-                Objects.equals(grades, student.grades) &&
-                studyMode == student.studyMode;
+                Objects.equals(lastName, student.lastName);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(firstName, lastName, id, groupsNumbers, grades, studyMode);
+        return Objects.hash(firstName, lastName, id);
     }
 
     @Override
