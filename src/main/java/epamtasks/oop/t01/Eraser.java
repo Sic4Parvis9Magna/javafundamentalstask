@@ -1,5 +1,7 @@
 package epamtasks.oop.t01;
 
+import java.util.Objects;
+
 public class Eraser extends Stationery {
     private boolean canErasePen;
 
@@ -20,5 +22,19 @@ public class Eraser extends Stationery {
 
     public boolean isCanErasePen() {
         return canErasePen;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Eraser)) return false;
+        Eraser eraser = (Eraser) o;
+        return canErasePen == eraser.canErasePen;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(canErasePen);
     }
 }

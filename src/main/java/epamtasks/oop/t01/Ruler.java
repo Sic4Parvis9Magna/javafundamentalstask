@@ -1,5 +1,7 @@
 package epamtasks.oop.t01;
 
+import java.util.Objects;
+
 public class Ruler extends Stationery {
     private double length;
     private String units;
@@ -27,5 +29,20 @@ public class Ruler extends Stationery {
     }
     public String getUnits() {
         return units;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ruler)) return false;
+        Ruler ruler = (Ruler) o;
+        return Double.compare(ruler.length, length) == 0 &&
+                Objects.equals(units, ruler.units);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(length, units);
     }
 }

@@ -1,5 +1,7 @@
 package epamtasks.oop.t01;
 
+import java.util.Objects;
+
 public class Pencil extends Stationery {
     private final Color color;
     private double thickness;
@@ -25,5 +27,18 @@ public class Pencil extends Stationery {
         return thickness;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pencil)) return false;
+        Pencil pencil = (Pencil) o;
+        return Double.compare(pencil.thickness, thickness) == 0 &&
+                color == pencil.color;
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(color, thickness);
+    }
 }

@@ -1,5 +1,7 @@
 package epamtasks.oop.t01;
 
+import java.util.Objects;
+
 public class Paper extends Stationery {
 
     private double width;
@@ -31,5 +33,18 @@ public class Paper extends Stationery {
         return width;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Paper)) return false;
+        Paper paper = (Paper) o;
+        return Double.compare(paper.width, width) == 0 &&
+                Double.compare(paper.length, length) == 0;
+    }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(width, length);
+    }
 }

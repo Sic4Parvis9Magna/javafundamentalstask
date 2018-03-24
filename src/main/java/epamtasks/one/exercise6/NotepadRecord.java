@@ -3,6 +3,8 @@ package epamtasks.one.exercise6;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 import static org.apache.logging.log4j.LogManager.*;
 
 /**
@@ -65,6 +67,17 @@ public class NotepadRecord {
 	 	return EMPTY;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof NotepadRecord)) return false;
+		NotepadRecord that = (NotepadRecord) o;
+		return id == that.id;
+	}
 
+	@Override
+	public int hashCode() {
 
+		return Objects.hash(id);
+	}
 }

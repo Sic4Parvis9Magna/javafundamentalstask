@@ -4,11 +4,12 @@ import epamtasks.oop.t01.Stationery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Employee {
     private String firstName;
     private String lastName;
-    private int id;
+    private final int id;
     private Position position;
     private List<Stationery> stationeryList;
 
@@ -43,6 +44,7 @@ public class Employee {
         stationeryList.addAll(tools);
         return this;
     }
+
     public double getTotalPrice(){
         double totalPrice=0;
         for (Stationery tool:stationeryList){
@@ -50,8 +52,6 @@ public class Employee {
         }
         return totalPrice;
     }
-
-
     public String getFirstName() {
         return firstName;
     }
@@ -69,5 +69,21 @@ public class Employee {
     }
     public static int getEmployeeCounter() {
         return employeeCounter;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id &&
+                Objects.equals(firstName, employee.firstName) &&
+                Objects.equals(lastName, employee.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(firstName, lastName, id);
     }
 }

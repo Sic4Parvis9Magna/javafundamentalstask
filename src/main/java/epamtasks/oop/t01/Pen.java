@@ -2,6 +2,14 @@ package epamtasks.oop.t01;
 
 import java.util.Objects;
 
+/**
+ * Pen class contain info about "Pen" and allow manage few parameters on each member
+ * of Pen, like as color and thickness.
+ * Pen extends Stationery @see epamtasks.oop.t01.Stationery,
+ * which contains info about name and price of Stationery's members,
+ * and provides method for managing them.
+ */
+
 public class Pen extends Stationery {
 
     private Color color;

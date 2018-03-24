@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
  * NotepadChecker - class for technical check of functionality Notepad
  * (@see  epamtasks.one.exercise6.Notepad)
  * and NoteradRecord (@see epamtasks.one.exercise6.NotepadRecords) classes.
+ * For tests( @see epamtasks.one.exercise6.NotepadTest)
  */
 public class NotepadChecker {
 
