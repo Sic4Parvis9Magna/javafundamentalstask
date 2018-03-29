@@ -25,6 +25,7 @@ public class PaperParser {
         return this;
     }
 
+    //TODO solve problem / change to boolean
     public PaperParser initialiseContent(){
         String str;
         if(new File(fileName).isFile()) {
