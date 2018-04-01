@@ -33,4 +33,9 @@ class WizardEncoderTest {
         assertTrue(we.getContent().toString().contains("return"));
         System.out.println(we.getContent().toString());
     }
+    @Test
+    void readFromFileTest3(){
+        WizardEncoder we = new WizardEncoder();
+        assertFalse(we.readFromFile("myfile.dat"));
+    }
 }
