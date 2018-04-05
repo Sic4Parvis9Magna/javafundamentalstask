@@ -48,7 +48,7 @@ public class FileMagerRunner {
                     System.out.println(fm.getContent());
                     break;
                 case "write":
-                    fm.writeFoFile(scanner.next(),scanner.nextLine());
+                    fm.writeToFile(scanner.next(),scanner.nextLine());
                     System.out.println("message was written!");
                     break;
                 case "append":

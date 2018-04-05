@@ -19,7 +19,7 @@ public class PaperParser {
     }
 
     PaperParser(){
-        htmlContent = new StringBuilder();
+        htmlContent = new StringBuilder(" ");
         fileName = "Java.SE.03.Information handling_task_attachment.html";
     }
 
@@ -32,7 +32,6 @@ public class PaperParser {
         return this;
     }
 
-    //TODO solve problem
     public boolean initialiseContent(){
         String str;
         try (BufferedReader reader = new BufferedReader(
@@ -101,5 +100,50 @@ public class PaperParser {
         return  nums;
     }
 
+    public  List<String> parseSentense(String text){
+        String refRegexp = "\\(Рис\\.([и\\s+\\d+\\,+]*)\\)" ;
+        Matcher m = Pattern.compile(refRegexp).matcher(text);
+        List<String> sentences = new ArrayList<>();
+        while (m.find()){
+            int end = findEndChar(m.end(),text);
+            int start = findStartChar(m.start(),text);
+            sentences.add(text.substring(start,end));
+        }
+        return sentences;
+    }
+
+    public static int findStartChar(int start, String text) {
+        int begin = start;
+        int end = start;
+        String statring = "[^\\(]([А-Я])[а-я]*[^\\.\\d\\<]";
+        Matcher m = Pattern.compile(statring).matcher(text);
+        boolean task =false;
+       do {
+            begin--;
+            m.region(begin,end);
+            if(m.find()){
+
+                if(m.group().endsWith(")")) {
+                    end = m.start() - 2;
+                    begin = end-1;
+                }else {
+                    task = true;
+                }
+            }
+        } while(!task);
+
+        return m.start(1);
+    }
+
+    public static int findEndChar(int end, String text) {
+
+        String ending = "[^А-Я]([\\.?!])[^\\dа-я\\.\\)]{2}";
+        Matcher m = Pattern.compile(ending).matcher(text);
+       if (!m.find(end-1) ){
+           return text.length()-1;
+       }
+
+       return m.start(1)+1;
+    }
 
 }

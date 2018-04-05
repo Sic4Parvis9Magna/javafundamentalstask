@@ -1,6 +1,5 @@
 package epamtasks.exceptions.t01;
 
-import epamtasks.exceptions.t01.FileManager;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -126,7 +125,7 @@ class FileManagerTest {
         System.out.printf("Curent dir files:%n%s",fm.getDispFiles());
         assertTrue(fm.createFile(fileName));
         System.out.printf("%nudated dir files:%n%s",fm.getDispFiles());
-        assertTrue(fm.writeFoFile(fileName,myMessage));
+        assertTrue(fm.writeToFile(fileName,myMessage));
         assertTrue(fm.readFromFile(fileName));
         System.out.println(fm.getContent());
         assertEquals(myMessage,fm.getContent().trim());

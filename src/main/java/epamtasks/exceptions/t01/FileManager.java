@@ -122,7 +122,7 @@ public class FileManager {
        return cont;
     }
 
-    public boolean writeFoFile(String fileName, String myMessage) {
+    public boolean writeToFile(String fileName, String myMessage) {
         try (BufferedWriter writer = new BufferedWriter(
                 new FileWriter(getCurrentPath()+File.separator+fileName))){
             writer.write(myMessage);

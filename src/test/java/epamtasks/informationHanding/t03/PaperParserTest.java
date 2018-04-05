@@ -28,7 +28,7 @@ class PaperParserTest {
     static String simpleRus = "(Рис. 9)";
 
     @Test
-    void parseSimpeRefTest(){
+    void parseSimpleRefTest(){
 
         String regexp = "\\(Рис\\.\\s+(\\d+)\\)";
         Pattern p = Pattern.compile(regexp);
@@ -41,7 +41,7 @@ class PaperParserTest {
         System.out.printf("group#0:%s%ngroup#1:%s%n",m.group(),m.group(1));
         if(m.find())
                 System.out.printf("group#0:%s%ngroup#1:%s%n",m.group(),m.group(1));
-
+        assertEquals("19",m.group(1));
 
     }
 
@@ -81,17 +81,21 @@ class PaperParserTest {
         Pattern p = Pattern.compile(regexp4);
         Matcher m= p.matcher(pp.getContent());
         Set<Integer> nums = new HashSet<>();
+        int count =0;
         while (m.find()){
+            count++;
             System.out.println(m.group());
             nums.addAll(parseNumber(m.group(1)));
         }
         System.out.println(nums);
+        System.out.printf("number of matches = %d%n",count);
         assertTrue(nums.contains(26));
         assertTrue(nums.contains(18));
     }
 
     @Test
     void isSeqRefPaperTest(){
+
         PaperParser pp = new PaperParser();
         assertTrue(pp.initialiseContent());
         System.out.println( pp.getContent());
@@ -99,54 +103,69 @@ class PaperParserTest {
     }
 
     @Test
-    void parseTextForSentenceTest1(){
-        PaperParser parser = new PaperParser();
-        assertTrue(parser.initialiseContent());
-        String text1 = parser.getContent();
-        String regexp = "[\\(Рис\\.\\s+(\\d+)\\)]";
-        String allCharExPoint2 = "[[\\(.+\\)]^!?]*";
-        String my =" расположены в <..>4252yijls вершинах (Рис. 9) правильных шестиугольников ?";
-        String sentenceRegexp2 = "([А-Я][^<[ис\\.]]"+allCharExPoint2+"[\\.?!])\\s*[А-Я\\<\\&]";
-        Pattern p = Pattern.compile(sentenceRegexp2);
-        Matcher m= p.matcher(text1);
-       //assertTrue(m.find());
-        int i=0;
-        int sentenceCounter =0;
-        while (m.find(i)) {
-            System.out.printf("You find %d sentense%n",sentenceCounter++);
-            i = m.end()-1;
-            System.out.println(m.group(1));
-
-        }
+    void findStartCharTest(){
+        String text2 = " В ядре атома углерода образовались условия начала строительства бериллиевой и углеродной плоскостей нейтрализации свободных неэлектростатических зарядов \n" +
+                "(Рис. 9) протонов. В ядре атома кислорода (Рис. Н. И. Чесуваев) завершается строительство бериллиевой плоскости нейрализации, а в ядре атома неона (Рис. 13) \n" +
+                "завершается строительство углеродной плоскости нейтрализации неэлектростатических зарядов протонов. <>;Снрзш авыю.";
+      String text3 = " Векторами показаны (Рис. 17) \n" +
+              "прямые силы притяжения и диагональные силы отталкивания между разноимёнными и одноимёнными спиновыми неэлетростатическими зарядами протонов \n" +
+              "и лёгких нейтронов.</div><p><img width=\"397\" vspace=\"5\" height=\"605\" align=\"middle\" src=\"./Новая фундаментальная физика\n" +
+              " (Статья А.Н. Ховалкина)_files/pic17.jpg\" alt=\"\"></p><p>&nbsp;</p><p>&nbsp;</p><div>Рис. 17 &nbsp;\n" +
+              "На упрощённой схеме шесть атомов углерода в вершинах правильного шестиугольника совместно образуют минимальную,\n" +
+              " первичную структуру элементарной молекулы графита – С6.</div><div>&nbsp;</div><div>Минимальная структура из шести\n" +
+              " атомов углерода в элементарной молекуле С6 (Рис. 23) обладает химическими свойствами графита и,\n" +
+              " становится зародышевым центром плоской раскрытой молекулы графита С54 (Рис. 18) – чешуйки графита.\n" +
+              " Из плоских, раскрытых молекул графита С54 рождаются закрытые молекулы графита С60 – фуллерены (Рис. 22).";
+       int end = text2.indexOf("13");
+       int match = PaperParser.findStartChar(end-1,text2);
+        System.out.printf("found at index %d char %s%n",match,text2.charAt(match));
+       assertEquals('В',text2.charAt(match));
+         match = PaperParser.findStartChar(text2.length()-1,text2);
+        System.out.printf("found at index %d char %s%n",match,text2.charAt(match));
+        assertEquals('С',text2.charAt(match));
+        match = PaperParser.findStartChar(text3.indexOf("23"),text3);
+        System.out.printf("found at index %d char %s%n",match,text3.charAt(match));
+        assertEquals('М',text3.charAt(match));
+        match = PaperParser.findStartChar(text3.indexOf("(Рис. 22)"),text3);
+        System.out.printf("found at index %d char %s%n",match,text3.charAt(match));
+        assertEquals('И',text3.charAt(match));
     }
+    @Test
+    void findEndCharTest(){
+        String text3 = " Векторами показаны (Рис. 17) \n" +
+                "прямые силы притяжения и диагональные силы отталкивания между разноимёнными и одноимёнными спиновыми неэлетростатическими зарядами протонов \n" +
+                "и лёгких нейтронов.</div><p><img width=\"397\" vspace=\"5\" height=\"605\" align=\"middle\" src=\"./Новая фундаментальная физика\n" +
+                " (Статья А.Н. Ховалкина)_files/pic17.jpg\" alt=\"\"></p><p>&nbsp;</p><p>&nbsp;</p><div>Рис. 17 &nbsp;\n" +
+                "На упрощённой схеме шесть атомов углерода в вершинах правильного шестиугольника совместно образуют минимальную,\n" +
+                " первичную структуру элементарной молекулы графита – С6.</div><div>&nbsp;</div><div>Минимальная структура из шести\n" +
+                " атомов углерода в элементарной молекуле С6 (Рис. 23) обладает химическими свойствами графита и,\n" +
+                " становится зародышевым центром плоской раскрытой молекулы графита С54 (Рис. 18) – чешуйки графита.\n" +
+                " Из плоских, раскрытых молекул графита С54 рождаются закрытые молекулы графита С60 – фуллерены (Рис. 22).";
 
+        int match  = PaperParser.findEndChar(text3.indexOf("(Рис. 23)"),text3);
+        System.out.printf("found at index %d char %s%n",match,text3.charAt(match-1));
+        assertEquals('.',text3.charAt(match-1));
+         match  = PaperParser.findEndChar(text3.indexOf("рождаются закрытые молекулы графита С60"),text3);
+        System.out.printf("found at index %d char %s%n",match,text3.charAt(match));
+        assertEquals('.',text3.charAt(match));
+        match  = PaperParser.findEndChar(text3.indexOf("первичную структуру элементарной"),text3);
+        System.out.printf("found at index %d char %s%n",match,text3.charAt(match-1));
+        assertEquals('.',text3.charAt(match-1));
+
+    }
 
     @Test
-    void parseForSentenceText2(){
-        PaperParser parser = new PaperParser();
-        assertTrue(parser.initialiseContent());
-
-        String textEx ="В атоме гелия (Рис. 7) силам притяжения между разнополярными зарядами на концах спиновых трубок протона и электрона противодействуют силы отталкивания между однополярными концевыми зарядами в спиновых трубках."+
-                " Слабые силы притяжения между элементарными электростатическими зарядами противоположного знака в электроне и протоне способны только удерживать электроны в структуре атома на некотором расстоянии."+
-                " Мощные силы отталкивания между однополярными спиновыми зарядами на концах элементарных трубок в электроне и протоне противодействуют бесконечному сближению и поэтому электроны не «падают» на протоны в ядрах атомов. ";
-
-        //System.out.println(parser.getContent());
-        System.out.println(textEx);
-        String text = parser.getContent();
-        String regexp4 ="\\(Рис\\.([и\\s+\\d+\\,+]*)\\)" ;
-        String superRegexp = "[^\\(][А-Я][^\\.\\&\\<][^\\!\\?]*[\\.\\!\\?]\\s?[[А-Я]\\&\\<]";
-        Pattern p = Pattern.compile(superRegexp);
-        Matcher m= p.matcher(text);
-
-        int i =0;
-        while (m.find(i)  ) {
-            i=m.end()-2;
-
-            System.out.println("\nNew Sentense\n");
-            System.out.println(m.group());
-
+    void parseSentenseTest(){
+        PaperParser pp = new PaperParser();
+        assertTrue(pp.initialiseContent());
+       List<String> sentences = pp.parseSentense(pp.getContent());
+       assertTrue(!sentences.isEmpty());
+        System.out.printf("Sentence counter = %d%n",sentences.size());
+        for (String str:sentences) {
+            System.out.println("Is a new sent");
+            System.out.println(str);
         }
+        System.out.printf("Sentence counter = %d%n",sentences.size());
+        assertEquals(120,sentences.size());
     }
-
-
 }
