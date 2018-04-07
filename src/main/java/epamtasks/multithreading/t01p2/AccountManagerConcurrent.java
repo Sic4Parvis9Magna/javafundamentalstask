@@ -1,20 +1,20 @@
-package epamtasks.multithreading.t01;
+package epamtasks.multithreading.t01p2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
-
-public class AccountManager extends Thread{
-    private static final Logger log = LogManager.getLogger(AccountManager.class);
-    private BankAccount bankAccount;
-    private BankAccount bankAccount2;
+public class AccountManagerConcurrent extends Thread {
+    private static final Logger log = LogManager.getLogger(AccountManagerConcurrent.class);
+    private BankAccountConcurrent bankAccount;
+    private BankAccountConcurrent bankAccount2;
     private final int managerId;
 
     private static int managerCounter ;
 
 
-    public AccountManager(BankAccount bankAccount,BankAccount bankAccount2){
+    public AccountManagerConcurrent(BankAccountConcurrent bankAccount,
+                                    BankAccountConcurrent bankAccount2){
         super();
         this.bankAccount = bankAccount;
         this.bankAccount2 = bankAccount2;
@@ -29,56 +29,56 @@ public class AccountManager extends Thread{
     @Override
     public void run(){
 
-            for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
 
-                getTransAction();
-                getWithdraw();
-                getDeposit();
+            getTransAction();
+            getWithdraw();
+            getDeposit();
 
-            }
+        }
 
 
     }
 
-    private AccountManager getTransAction(){
+    private AccountManagerConcurrent getTransAction(){
         Random random = new Random();
         boolean reult=false;
         double amount = random.nextDouble()*500+10;
         if((Math.random()*10+1)>5){
-            log.info("Manager#{} trying make transaction at {}$ from account {} to {} .",
-                    managerId,
-                    amount,
+            log.info("{} trying make transaction at {}$ from account {} to {} .",
+                    Thread.currentThread().getName(),
+                    (int)amount,
                     bankAccount.getHolder(),
                     bankAccount2.getHolder());
 
-          reult= bankAccount.transAction(bankAccount2, amount);
+            reult= bankAccount.transAction(bankAccount2, amount);
 
-            log.info("Manager#{} {} transaction at {}$ from account {} to {} .",
-                    managerId,
+            log.info("{} {} transaction at {}$ from account {} to {} .",
+                    Thread.currentThread().getName(),
                     reult,
-                    amount,
+                    (int)amount,
                     bankAccount.getHolder(),
                     bankAccount2.getHolder());
         }else {
-            log.info("Manager#{} trying to make transaction at {}$ from account {} to {} .",
-                    managerId,
-                    amount,
+            log.info("{} trying to make transaction at {}$ from account {} to {} .",
+                    Thread.currentThread().getName(),
+                    (int)amount,
                     bankAccount2.getHolder(),
                     bankAccount.getHolder());
 
-           reult= bankAccount2.transAction(bankAccount, amount);
+            reult= bankAccount2.transAction(bankAccount, amount);
 
-            log.info("Manager#{} {} made transaction at {}$ from account {} to {} .",
-                    managerId,
+            log.info("{} {} made transaction at {}$ from account {} to {} .",
+                    Thread.currentThread().getName(),
                     reult,
-                    amount,
+                    (int)amount,
                     bankAccount2.getHolder(),
                     bankAccount.getHolder());
         }
         return this;
     }
 
-    private AccountManager getWithdraw(){
+    private AccountManagerConcurrent getWithdraw(){
         Random random = new Random();
 
         if(random.nextInt(100)%2 !=0){
@@ -89,7 +89,7 @@ public class AccountManager extends Thread{
         return this;
     }
 
-    private AccountManager getDeposit(){
+    private AccountManagerConcurrent getDeposit(){
         Random random = new Random();
 
         if(random.nextInt(100)%2 !=0){
@@ -99,5 +99,4 @@ public class AccountManager extends Thread{
         }
         return this;
     }
-
 }

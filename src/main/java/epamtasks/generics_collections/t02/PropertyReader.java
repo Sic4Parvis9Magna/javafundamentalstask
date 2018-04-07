@@ -1,9 +1,10 @@
-package epamtasks.exceptions.t02;
+package epamtasks.generics_collections.t02;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+
 public class PropertyReader {
     private static final Logger log = LogManager.getLogger(PropertyReader.class);
 

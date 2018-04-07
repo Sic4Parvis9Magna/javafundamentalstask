@@ -1,21 +1,21 @@
-package epamtasks.multithreading.t01;
+package epamtasks.multithreading.t01p2;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static epamtasks.multithreading.t01.BankAccount.*;
+import static epamtasks.multithreading.t01p2.BankAccountConcurrent.buildAccount;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankAccountTest {
+class BankAccountConcurrentTest {
 
     @Test
     void getBalanseTest() {
         String holdersName = "Andrew Smith";
         String fileName = "testAcc.txt";
-        Optional<BankAccount>  bac = buildAccount(holdersName, fileName ) ;
+        Optional<BankAccountConcurrent>  bac = buildAccount(holdersName, fileName ) ;
         if ( (bac).isPresent()) {
-            BankAccount bankAccount = bac.get();
+            BankAccountConcurrent bankAccount = bac.get();
 
             int amount = (int) bankAccount.getBalanse();
             assertEquals(0, amount);
@@ -28,9 +28,9 @@ class BankAccountTest {
     void deposit() {
         String holdersName = "Andrew Smith";
         String fileName = "testAcc.txt";
-        Optional<BankAccount>  bac = buildAccount(holdersName, fileName ) ;
+        Optional<BankAccountConcurrent>  bac = buildAccount(holdersName, fileName ) ;
         if ( (bac).isPresent()) {
-            BankAccount bankAccount = bac.get();
+            BankAccountConcurrent bankAccount = bac.get();
             int amount = (int) bankAccount.getBalanse();
             assertEquals(0, amount);
             assertTrue(bankAccount.deposit(34.5));
@@ -43,9 +43,9 @@ class BankAccountTest {
     void windrawAndDepositTest(){
         String holdersName = "Andrew Smith";
         String fileName = "testAcc.txt";
-        Optional<BankAccount>  bac = buildAccount(holdersName, fileName ) ;
+        Optional<BankAccountConcurrent>  bac = buildAccount(holdersName, fileName ) ;
         if ( (bac).isPresent()) {
-            BankAccount bankAccount = bac.get();
+            BankAccountConcurrent bankAccount = bac.get();
             int amount = (int) bankAccount.getBalanse();
             assertEquals(0, amount);
             assertTrue(bankAccount.deposit(400));
@@ -62,11 +62,11 @@ class BankAccountTest {
         String fileName = "testAcc.txt";
         String holdersName1 = "Lisa Smith";
         String fileName1 = "testAcc2.txt";
-        Optional<BankAccount>  bac = buildAccount(holdersName, fileName ) ;
-        Optional<BankAccount>  bac1 = buildAccount(holdersName1, fileName1 ) ;
+        Optional<BankAccountConcurrent>  bac = buildAccount(holdersName, fileName ) ;
+        Optional<BankAccountConcurrent> bac1 = buildAccount(holdersName1, fileName1 ) ;
         if ( (bac).isPresent() && (bac1).isPresent()) {
-            BankAccount bankAccount = bac.get();
-            BankAccount bankAccount1 = bac1.get();
+            BankAccountConcurrent bankAccount = bac.get();
+            BankAccountConcurrent bankAccount1 = bac1.get();
             assertTrue(bankAccount.deposit(400));
             assertTrue(bankAccount1.deposit(400));
             assertTrue(bankAccount.transAction(bankAccount1, 200));

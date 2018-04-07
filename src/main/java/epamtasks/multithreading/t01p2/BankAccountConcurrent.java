@@ -1,22 +1,25 @@
-package epamtasks.multithreading.t01;
+package epamtasks.multithreading.t01p2;
 
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class BankAccount {
+public class BankAccountConcurrent {
 
-    private static final Logger log = LogManager.getLogger(BankAccount.class);
+    private static final Logger log = getLogger(BankAccountConcurrent.class);
     private String holder;
     private String filename;
-    private final Object lock = new Object();
+    private final Lock lock;
+    private final Lock tranLock;
     private static final String ERROR_FORMAT ;
 
 
@@ -26,21 +29,22 @@ public class BankAccount {
     }
 
 
-    private BankAccount(String holder, String filename) {
+    private BankAccountConcurrent(String holder, String filename) {
         this.holder = holder;
         this.filename = filename;
-
+        lock = new ReentrantLock();
+        tranLock = new ReentrantLock();
     }
 
-    public static Optional<BankAccount> buildAccount(String holder, String fileName)  {
+    public static Optional<BankAccountConcurrent> buildAccount(String holder, String fileName)  {
 
-      try(BufferedWriter writer = new BufferedWriter( new FileWriter(fileName))) {
-          writer.write(String.format("Account holder: \"%s\"%nCurrent amount: %.2f $",holder,0.0));
-          return   of(new BankAccount(holder,fileName));
-      } catch (IOException e) {
-          log.error(ERROR_FORMAT,e.getMessage(),e.getStackTrace());
+        try(BufferedWriter writer = new BufferedWriter( new FileWriter(fileName))) {
+            writer.write(String.format("Account holder: \"%s\"%nCurrent amount: %.2f $",holder,0.0));
+            return   of(new BankAccountConcurrent(holder,fileName));
+        } catch (IOException e) {
+            log.error(ERROR_FORMAT,e.getMessage(),e.getStackTrace());
             return empty();
-      }
+        }
 
     }
 
@@ -55,12 +59,16 @@ public class BankAccount {
 
     public double getBalanse(){
         double am = 0;
-        synchronized (lock){
+        lock.lock();
+        try{
+
             log.info("Thread {} lock {} account for getBalanse",
                     Thread.currentThread().getName(),getHolder());
-           am = readAmount();
+            am = readAmount();
             log.info("Thread {} unlock {} account for getBalanse",
                     Thread.currentThread().getName(),getHolder());
+        }finally {
+            lock.unlock();
         }
 
         return am;
@@ -99,14 +107,17 @@ public class BankAccount {
     public boolean deposit(double deposit){
         if(deposit <=0)return false;
         boolean result =false;
-        synchronized (lock){
+       lock.lock();
+       try{
             log.info("Thread {} lock {} account for deposit {}",
                     Thread.currentThread().getName(),getHolder(),deposit);
             Double amount = deposit + getBalanse();
             result = writeDeposit(deposit,amount);
             log.info("Thread {} unlock {} account for deposit {}",
                     Thread.currentThread().getName(),getHolder(),deposit);
-        }
+        }finally {
+           lock.unlock();
+       }
 
         return result;
     }
@@ -128,19 +139,22 @@ public class BankAccount {
 
     public boolean withdraw(double amount){
         boolean result=false;
-        synchronized (lock){
+        lock.lock();
+        try {
             log.info("Thread {} lock {} account for withdraw {}",
                     Thread.currentThread().getName(),getHolder(),amount);
             Double balanse =  getBalanse();
-          if(amount > balanse){
-              return false;
-          }
-              balanse -= amount;
+            if(amount > balanse){
+                return false;
+            }
+            balanse -= amount;
 
             result = writeWithdraw(amount, balanse);
 
             log.info("Thread {} unlock {} account for withdraw {}",
                     Thread.currentThread().getName(),getHolder(),amount);
+        }finally {
+            lock.unlock();
         }
 
         return result;
@@ -161,20 +175,22 @@ public class BankAccount {
         }
     }
 
-    public boolean transAction(BankAccount destination, double amount){
+    public boolean transAction(BankAccountConcurrent destination, double amount){
         if(this == destination) return false;
-        synchronized (this) {
+        tranLock.lock();
+        try {
 
-                if (!this.withdraw(amount)) {
-                    return false;
-                } else if (!destination.deposit(amount)) {
-                    this.deposit(amount);
-                    return false;
-                }
-                return true;
+            if (!this.withdraw(amount)) {
+                return false;
+            } else if (!destination.deposit(amount)) {
+                this.deposit(amount);
+                return false;
+            }
+            return true;
 
+        }finally {
+            tranLock.unlock();
         }
 
     }
-
 }
