@@ -60,7 +60,7 @@ class SimpleConnectionTest {
         System.out.println(sqlFiles);
         for (String sqlFile:sqlFiles) {
             assertTrue(con.uploadSQLfromFile(sqlFile));
-            assertTrue(con.updateWithSQL(con.getSql()));
+            assertTrue(con.updateWithSQL(con.getStoredSQL()));
         }
 
         assertTrue(con.tryCloseConnection());
@@ -80,7 +80,7 @@ class SimpleConnectionTest {
         System.out.println(sqlFiles);
         for (String sqlFile:sqlFiles) {
             assertTrue(con.uploadSQLfromFile(sqlFile));
-            assertTrue(con.updateWithSQL(con.getSql()));
+            assertTrue(con.updateWithSQL(con.getStoredSQL()));
         }
         String sql = "SELECT * FROM Person";
         String sql2 = "SELECT * FROM Person WHERE password='qwerty';";
@@ -103,7 +103,7 @@ class SimpleConnectionTest {
         System.out.println(sqlFiles);
         for (String sqlFile:sqlFiles) {
             assertTrue(con.uploadSQLfromFile(sqlFile));
-            assertTrue(con.updateWithSQL(con.getSql()));
+            assertTrue(con.updateWithSQL(con.getStoredSQL()));
         }
         assertTrue(con.deleteTable("Person"));
         assertTrue(con.tryCloseConnection());
@@ -120,7 +120,7 @@ class SimpleConnectionTest {
         assertTrue(con.isConnected());
         System.out.println("Connection is ready");
         assertTrue(con.createTable(createSQL));
-        SimplePerson person = new SimplePerson()
+        SimplePerson person =  SimplePerson.getDefaultPerson()
                 .setFirstName("Bob")
                 .setLastName("Wood")
                 .setAddress("Every Green Street,33")
@@ -144,7 +144,7 @@ class SimpleConnectionTest {
         System.out.println(sqlFiles);
         for (String sqlFile:sqlFiles) {
             assertTrue(con.uploadSQLfromFile(sqlFile));
-            assertTrue(con.updateWithSQL(con.getSql()));
+            assertTrue(con.updateWithSQL(con.getStoredSQL()));
         }
 
         String pasosDob = "1987-03-12";
@@ -168,7 +168,7 @@ class SimpleConnectionTest {
         System.out.println(sqlFiles);
         for (String sqlFile:sqlFiles) {
             assertTrue(con.uploadSQLfromFile(sqlFile));
-            assertTrue(con.updateWithSQL(con.getSql()));
+            assertTrue(con.updateWithSQL(con.getStoredSQL()));
         }
 
         String update = "UPDATE Person\n" +

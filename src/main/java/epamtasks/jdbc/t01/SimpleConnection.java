@@ -20,7 +20,7 @@ public class SimpleConnection {
     private final String user;
     private final String password;
     private Connection connection;
-    private String sql;
+    private String storedSQL;
     private static final String ERROR_MSG;
 
     static {
@@ -78,7 +78,7 @@ public class SimpleConnection {
            return false;
        }
         try (Statement st = connection.createStatement();){
-           int countRows = st.executeUpdate(sql);
+           int countRows = st.executeUpdate(storedSQL);
            log.info("changed rows: {}",countRows);
            log.info("Table was created");
            return true;
@@ -114,7 +114,7 @@ public class SimpleConnection {
             try ( ResultSet result = preparedStatement.executeQuery();) {
 
                 while (result.next()) {
-                    people.add(new SimplePerson()
+                    people.add(SimplePerson.getDefaultPerson()
                             .setFirstName(result.getString("first_name"))
                             .setLastName(result.getString("last_name"))
                             .setPermission(result.getBoolean("permission"))
@@ -153,7 +153,7 @@ public class SimpleConnection {
            while ((temp = br.readLine()) != null) {
                sb.append(temp);
            }
-           sql=sb.toString();
+           storedSQL =sb.toString();
            return true;
        } catch (FileNotFoundException e) {
            log.error(ERROR_MSG,e.getMessage(),e.getStackTrace());
@@ -223,8 +223,8 @@ public class SimpleConnection {
     }
     public Connection getConn(){return  connection;}
 
-    public String getSql() {
-        return sql;
+    public String getStoredSQL() {
+        return storedSQL;
     }
 
 
